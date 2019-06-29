@@ -14,16 +14,30 @@ void destroy(doublelinklist* self) {
 int get(doublelinklist* self, int index){
     if (index >= self->length) return NULL;
 
-    //TODO: iterate from rear if index >= length/2
-    int curin = 0;
-    node* curr = self->head;
-    while(curr != NULL) {
-        if(curin == index) {
-            return curr->value;
+    if (index >= self->length/2) {
+        int curin = self->length-1;
+        node* curr = self->tail;
+        while(curr != NULL) {
+            if(curin == index) {
+                return curr->value;
+            }
+            curin--;
+            curr = curr->prev;
         }
-        curin++;
-        curr = curr->next;
     }
+    else
+    {
+        int curin = 0;
+        node* curr = self->head;
+        while(curr != NULL) {
+            if(curin == index) {
+                return curr->value;
+            }
+            curin++;
+            curr = curr->next;
+        }
+    }
+    
     return NULL;
 }
 
@@ -44,6 +58,36 @@ int getlength(doublelinklist* self){
 
 //Removes the element at the given index. Returns the element deleted, or null otherwise
 int remove(doublelinklist* self, int index){
+    if (index >= self->length) return NULL;
+    if (index >= self->length/2) {
+        int curin = self->length-1;
+        node* curr = self->tail;
+        while(curr != NULL) {
+            if(curin == index) {
+                curr->prev->next = curr->next;
+                curr->next->prev = curr->prev;
+                free(curr);
+                return self->length--;
+            }
+            curin--;
+            curr = curr->prev;
+        }
+    }
+    else
+    {
+        int curin = 0;
+        node* curr = self->head;
+        while(curr != NULL) {
+            if(curin == index) {
+                curr->prev->next = curr->next;
+                curr->next->prev = curr->prev;
+                free(curr);
+                return self->length--;
+            }
+            curin++;
+            curr = curr->next;
+        }
+    }
     return NULL;
 }
 //Appends another list to this one, destroying the other list. Returns the length of the new list.
@@ -71,7 +115,6 @@ int append(doublelinklist* self, doublelinklist* other){
 int find(doublelinklist* self, int value){
     if (value == NULL) return -1;
 
-    //TODO: iterate from rear if index >= length/2
     int curin = 0;
     node* curr = self->head;
     while(curr != NULL) {
