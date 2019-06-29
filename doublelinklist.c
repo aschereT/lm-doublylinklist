@@ -22,22 +22,42 @@ int get(doublelinklist* self, int index){
             curin++;
             curr = curr->next;
         }
+        return curr->value;
     }
 }
+
 //Returns the first element. Equivalent to get(0)
-int getfirst(doublelinklist* self);
+int getfirst(doublelinklist* self){
+    self->get(self, 0);
+}
+
 //Returns the last element. Equivalent to get(length())
-int getlast(doublelinklist* self);
+int getlast(doublelinklist* self){
+    self->get(self, self->length);
+}
+
 //Returns the length of the list, where 0 <= n
-int length(doublelinklist* self);
+int length(doublelinklist* self){
+    return self->length;
+}
+
 //Removes the element at the given index. Returns the element deleted, or null otherwise
-int remove(doublelinklist* self, int index);
+int remove(doublelinklist* self, int index){
+    return NULL;
+}
 //Appends another list to this one. Returns the length of the new list.
-int append(doublelinklist* self, doublelinklist* other);
+int append(doublelinklist* self, doublelinklist* other){
+    return NULL;
+}
 //Returns the index of the given value. Returns -1 if not found.
-int find(doublelinklist* self, int value);
+int find(doublelinklist* self, int value){
+    return NULL;
+}
+
 //Adds the given value to the end of the list. Returns the new length of the list.
-int add(doublelinklist* self, int value);
+int add(doublelinklist* self, int value){
+    return NULL;
+}
 
 doublelinklist* dllcreate() {
     doublelinklist* result = malloc(sizeof(doublelinklist));
