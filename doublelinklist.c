@@ -1,5 +1,5 @@
-#include "doublelinklist.h"
 #include <stdlib.h>
+#include "doublelinklist.h"
 
 void destroy(doublelinklist* self) {
     node* curr = self->head;
@@ -37,7 +37,7 @@ int getlast(doublelinklist* self){
 }
 
 //Returns the length of the list, where 0 <= n
-int length(doublelinklist* self){
+int getlength(doublelinklist* self){
     return self->length;
 }
 
@@ -66,5 +66,6 @@ doublelinklist* dllcreate() {
     }
 
     result->length = 0;
+    result->get = &get;
     return result;
 }
