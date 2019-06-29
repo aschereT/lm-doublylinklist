@@ -127,24 +127,69 @@ int find(doublelinklist* self, int value){
     return -1;
 }
 
-//Adds the given value to the end of the list. Returns the new length of the list.
-int add(doublelinklist* self, int value){
+//Adds the given value to the index given. Returns the new length of the list, or -1 otherwise
+int add(doublelinklist* self, int index, int value){
+    if (index < 0 || index > self->length) {
+        return -1;
+    }
     //allocate the memory
     node* newnode = malloc(sizeof(node));
     //setup the new node
     newnode->value = value;
-    newnode->next = NULL;
-    newnode->prev = self->tail;
-    //if the first element
-    if(self->length == 0) {
-        self->head = newnode;
-        self->tail = newnode;
+    
+    if (index == 0) {
+        //new head
+        newnode->next = self->head;
+        if (self->head != NULL){
+            self->head->prev = newnode;
+        }
         return self->length++;
     }
-    //make it the new tail
-    self->tail->next = newnode;
-    self->tail = &newnode;
-    return self->length++;
+    else if (index == self->length)
+    {
+        //new tail
+        newnode->prev = self->tail;
+        if (self->tail != NULL){
+            self->tail->next = newnode;
+        }
+        return self->length++;
+    }
+    else
+    {
+        //somewhere else
+        if (index >= self->length/2) {
+            int curin = self->length-1;
+            node* curr = self->tail;
+            while(curr != NULL) {
+                if(curin == index) {
+                    newnode->prev = curr->prev;
+                    newnode->next = curr;
+                    curr->prev->next = newnode;
+                    curr->prev = newnode;
+                    return self->length++;
+                }
+                curin--;
+                curr = curr->prev;
+            }
+        }
+        else
+        {
+            int curin = 0;
+            node* curr = self->head;
+            while(curr != NULL) {
+                if(curin == index) {
+                    newnode->prev = curr->prev;
+                    newnode->next = curr;
+                    curr->prev->next = newnode;
+                    curr->prev = newnode;
+                    return self->length++;
+                }
+                curin++;
+                curr = curr->next;
+            }
+        }
+    }
+    return -1;
 }
 
 doublelinklist* dllcreate() {
