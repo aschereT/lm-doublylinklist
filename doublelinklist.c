@@ -189,7 +189,7 @@ int find(doublelinklist *self, int value)
         if (curr->value == value)
         {
             //found it!
-            return curr->value;
+            return curin;
         }
         //didn't find it yet
         curin++;

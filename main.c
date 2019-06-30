@@ -171,7 +171,6 @@ void testRemove()
     list->remove(list, 3);
     expect("testRemove:99999", list, "[0] 0 [1] 2 [2] 4 \n");
     list->destroy(list);
-    
 
     //test edge cases
     list = createTestList(1);
@@ -185,8 +184,8 @@ void testRemove()
 
 void testAppend()
 {
-    doublelinklist* list1 = createTestList(0);
-    doublelinklist* list2 = createTestList(0);
+    doublelinklist *list1 = createTestList(0);
+    doublelinklist *list2 = createTestList(0);
 
     list1->append(list1, list2);
     expect("testAppend:empty&empty", list1, "\n");
@@ -209,10 +208,28 @@ void testAppend()
     list1->append(list1, list2);
     expect("testAppend:two&two", list1, "[0] 0 [1] 1 [2] 0 [3] 1 \n");
     list1->destroy(list1);
+
+    list1 = createTestList(1);
+    list2 = createTestList(2);
+    list1->append(list1, list2);
+    expect("testAppend:one&two", list1, "[0] 0 [1] 0 [2] 1 \n");
+    list1->destroy(list1);
+
+    list1 = createTestList(2);
+    list2 = createTestList(1);
+    list1->append(list1, list2);
+    expect("testAppend:two&one", list1, "[0] 0 [1] 1 [2] 0 \n");
+    list1->destroy(list1);
 }
 
-void testSearch()
+void testFind()
 {
+    doublelinklist *list = createTestList(10);
+    expectVal("testFind:five", list->find(list, 5), 5);
+    list->add(list, 7, 3);
+    expectVal("testFind:threefirst", list->find(list, 3), 3);
+    list->add(list, 0, 9);
+    expectVal("testFind:ninefirst", list->find(list, 9), 0);
 }
 
 int main()
@@ -226,6 +243,6 @@ int main()
     testAdd();
     testRemove();
     testAppend();
-    testSearch();
+    testFind();
     return 0;
 }
