@@ -85,9 +85,10 @@ void testCreate()
 void testDestroy()
 {
     doublelinklist *list = createTestList(0);
-    printf("testDestroy:empty Current pointer is %p. ", list);
+    printf("testDestroy:empty Current pointer is %p. \n", list);
     list->destroy(list);
-    printf("Destroyed, it is now %p (expect NULL)\n", list);
+    //uncomment the following line to check if list is deallocated
+    // printf("Destroyed, expect to get segfault when accessing list %lu\n", list->length);
 }
 
 void testFirst()
@@ -230,6 +231,7 @@ void testFind()
     expectVal("testFind:threefirst", list->find(list, 3), 3);
     list->add(list, 0, 9);
     expectVal("testFind:ninefirst", list->find(list, 9), 0);
+    list->destroy(list);
 }
 
 int main()
