@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include "doublelinklist.h"
 
-void destroy(doublelinklist* self) {
-    node* curr = self->head;
-    node* next;
-    while(curr != NULL) {
+void destroy(doublelinklist *self)
+{
+    node *curr = self->head;
+    node *next;
+    while (curr != NULL)
+    {
         //iterate through all the nodes, free-ing them
         next = curr->next;
         free(curr);
@@ -15,15 +17,20 @@ void destroy(doublelinklist* self) {
 }
 
 //Returns value at a specific index. Returns null if such index does not exist etc.
-int get(doublelinklist* self, int index){
-    if (index >= self->length) return NULL;
+int get(doublelinklist *self, int index)
+{
+    if (index >= self->length)
+        return NULL;
 
-    if (index >= self->length/2) {
+    if (index >= self->length / 2)
+    {
         //traverse from the tail, since index is closer to tail
-        int curin = self->length-1;
-        node* curr = self->tail;
-        while(curr != NULL) {
-            if(curin == index) {
+        int curin = self->length - 1;
+        node *curr = self->tail;
+        while (curr != NULL)
+        {
+            if (curin == index)
+            {
                 return curr->value;
             }
             curin--;
@@ -34,40 +41,49 @@ int get(doublelinklist* self, int index){
     {
         //traverse from the head, since index is closer to head
         int curin = 0;
-        node* curr = self->head;
-        while(curr != NULL) {
-            if(curin == index) {
+        node *curr = self->head;
+        while (curr != NULL)
+        {
+            if (curin == index)
+            {
                 return curr->value;
             }
             curin++;
             curr = curr->next;
         }
     }
-    
+
     return NULL;
 }
 
 //Returns the first element. Equivalent to get(0)
-int getfirst(doublelinklist* self){
+int getfirst(doublelinklist *self)
+{
     return self->get(self, 0);
 }
 
 //Returns the last element. Equivalent to get(length())
-int getlast(doublelinklist* self){
+int getlast(doublelinklist *self)
+{
     return self->get(self, self->length);
 }
 
 //Returns the length of the list, where 0 <= n
-int getlength(doublelinklist* self){
+int getlength(doublelinklist *self)
+{
     return self->length;
 }
 
 //Removes the element at the given index. Returns the element deleted, or null otherwise
-int remove(doublelinklist* self, int index){
-    if (index >= self->length) return NULL;
-    if (index == 0) {
+int remove(doublelinklist *self, int index)
+{
+    if (index >= self->length)
+        return NULL;
+    if (index == 0)
+    {
         //special case, head
-        if (self->length == 1) {
+        if (self->length == 1)
+        {
             //extra special case, also tail
             free(self->head);
             self->head == NULL;
@@ -78,9 +94,11 @@ int remove(doublelinklist* self, int index){
         self->head->prev = NULL;
         return self->length--;
     }
-    if (index == self->length-1) {
+    if (index == self->length - 1)
+    {
         //special case, tail
-        if (self->length == 1) {
+        if (self->length == 1)
+        {
             //extra special case, also head
             free(self->head);
             self->head == NULL;
@@ -91,12 +109,15 @@ int remove(doublelinklist* self, int index){
         self->tail->next = NULL;
         return self->length--;
     }
-    if (index >= self->length/2) {
+    if (index >= self->length / 2)
+    {
         //traverse from the tail, since index is closer to tail
-        int curin = self->length-1;
-        node* curr = self->tail;
-        while(curr != NULL) {
-            if(curin == index) {
+        int curin = self->length - 1;
+        node *curr = self->tail;
+        while (curr != NULL)
+        {
+            if (curin == index)
+            {
                 curr->prev->next = curr->next;
                 curr->next->prev = curr->prev;
                 free(curr);
@@ -110,9 +131,11 @@ int remove(doublelinklist* self, int index){
     {
         //traverse from the head, since index is closer to head
         int curin = 0;
-        node* curr = self->head;
-        while(curr != NULL) {
-            if(curin == index) {
+        node *curr = self->head;
+        while (curr != NULL)
+        {
+            if (curin == index)
+            {
                 curr->prev->next = curr->next;
                 curr->next->prev = curr->prev;
                 free(curr);
@@ -125,7 +148,8 @@ int remove(doublelinklist* self, int index){
     return NULL;
 }
 //Appends another list to this one, destroying the other list. Returns the length of the new list.
-int append(doublelinklist* self, doublelinklist* other){
+int append(doublelinklist *self, doublelinklist *other)
+{
     if (self->length == 0)
     {
         //self is empty, so this is just a move
@@ -145,12 +169,15 @@ int append(doublelinklist* self, doublelinklist* other){
     return self->length;
 }
 
-//Returns the index of the given value. Returns -1 if not found.
-int find(doublelinklist* self, int value){
+//Returns the index of the given value. Returns the index for the first match. Returns -1 if not found.
+int find(doublelinklist *self, int value)
+{
     int curin = 0;
-    node* curr = self->head;
-    while(curr != NULL) {
-        if(curr->value == value) {
+    node *curr = self->head;
+    while (curr != NULL)
+    {
+        if (curr->value == value)
+        {
             return curr->value;
         }
         curin++;
@@ -160,24 +187,29 @@ int find(doublelinklist* self, int value){
 }
 
 //Adds the given value to the index given. Returns the new length of the list, or -1 otherwise
-int add(doublelinklist* self, int index, int value){
-    if (index < 0 || index > self->length) {
+int add(doublelinklist *self, int index, int value)
+{
+    if (index < 0 || index > self->length)
+    {
         return -1;
     }
     //allocate the memory
-    node* newnode = malloc(sizeof(node));
+    node *newnode = malloc(sizeof(node));
     //setup the new node
     newnode->value = value;
-    
-    if (index == 0) {
+
+    if (index == 0)
+    {
         //new head
         newnode->prev = NULL;
         newnode->next = self->head;
-        if (self->head != NULL){
+        if (self->head != NULL)
+        {
             self->head->prev = newnode;
         }
         self->head = newnode;
-        if (self->length == 0) {
+        if (self->length == 0)
+        {
             self->tail = newnode;
         }
         return self->length++;
@@ -187,11 +219,13 @@ int add(doublelinklist* self, int index, int value){
         //new tail
         newnode->next = NULL;
         newnode->prev = self->tail;
-        if (self->tail != NULL){
+        if (self->tail != NULL)
+        {
             self->tail->next = newnode;
         }
         self->tail = newnode;
-        if (self->length == 0) {
+        if (self->length == 0)
+        {
             self->head = newnode;
         }
         return self->length++;
@@ -199,11 +233,14 @@ int add(doublelinklist* self, int index, int value){
     else
     {
         //somewhere else
-        if (index >= self->length/2) {
-            int curin = self->length-1;
-            node* curr = self->tail;
-            while(curr != NULL) {
-                if(curin == index) {
+        if (index >= self->length / 2)
+        {
+            int curin = self->length - 1;
+            node *curr = self->tail;
+            while (curr != NULL)
+            {
+                if (curin == index)
+                {
                     newnode->prev = curr->prev;
                     newnode->next = curr;
                     curr->prev->next = newnode;
@@ -217,9 +254,11 @@ int add(doublelinklist* self, int index, int value){
         else
         {
             int curin = 0;
-            node* curr = self->head;
-            while(curr != NULL) {
-                if(curin == index) {
+            node *curr = self->head;
+            while (curr != NULL)
+            {
+                if (curin == index)
+                {
                     newnode->prev = curr->prev;
                     newnode->next = curr;
                     curr->prev->next = newnode;
@@ -235,13 +274,16 @@ int add(doublelinklist* self, int index, int value){
 }
 
 //Adds the given value to the end. Equivalent to add(length). Returns the new length of the list, or -1 otherwise
-int addtail(doublelinklist* self, int value){
+int addtail(doublelinklist *self, int value)
+{
     return self->add(self, self->length, value);
 }
 
-doublelinklist* dllcreate() {
-    doublelinklist* result = malloc(sizeof(doublelinklist));
-    if (result == NULL) {
+doublelinklist *dllcreate()
+{
+    doublelinklist *result = malloc(sizeof(doublelinklist));
+    if (result == NULL)
+    {
         return NULL;
     }
 
