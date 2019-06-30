@@ -16,7 +16,8 @@ doublelinklist* createTestList(int length) {
 }
 
 char* printList(doublelinklist* list) {
-    char* output = malloc((PRINTLISTELELENGTH * list->getlength(list))+1);
+    //enough space for elements at intmax and an endline
+    char* output = malloc((PRINTLISTELELENGTH * list->getlength(list))+2);
     int offset = 0;
     for (size_t i = 0; i < list->getlength(list); i++)
     {
@@ -32,16 +33,35 @@ void printListOut(doublelinklist* list) {
     free(output);
 }
 
-void testCreate() {
-    doublelinklist* testlist = createTestList(0);
+void expect(char* testName, doublelinklist* list, char* expected) {
+    printf("%s ", testName);
+    char* output = printList(list);
+    if (strcmp(output, expected) != 0) {
+        printf("Expected %s, got %s\n", output, expected);
+    }
+    else
+    {
+        printf("\n");
+    }
+    free(output);
+}
 
+void testCreate() {
+    doublelinklist* list = createTestList(0);
+    expect("testCreate:empty", list, "\n");
+    list->destroy(list);
+
+    list = createTestList(1);
+    expect("testCreate:one", list, "[0] 0 \n");
+    list->destroy(list);
+
+    list = createTestList(10);
+    expect("testCreate:ten", list, "[0] 0 [1] 1 [2] 2 [3] 3 [4] 4 [5] 5 [6] 6 [7] 7 [8] 8 [9] 9 \n");
+    list->destroy(list);
 }
 
 int main()
 {
-    doublelinklist* testlist = createTestList(10);
-    printf("The length is %d\n", testlist->getlength(testlist));
-    printListOut(testlist);
-    testlist->destroy(testlist);
+    testCreate();
     return 0;
 }
