@@ -147,8 +147,6 @@ int append(doublelinklist* self, doublelinklist* other){
 
 //Returns the index of the given value. Returns -1 if not found.
 int find(doublelinklist* self, int value){
-    if (value == NULL) return -1;
-
     int curin = 0;
     node* curr = self->head;
     while(curr != NULL) {
@@ -247,10 +245,12 @@ doublelinklist* dllcreate() {
         return NULL;
     }
 
+    //set empty list
     result->length = 0;
     result->head = NULL;
     result->tail = NULL;
 
+    //set function pointers
     result->destroy = &destroy;
     result->get = &get;
     result->getfirst = &getfirst;
