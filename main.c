@@ -36,19 +36,35 @@ void printListOut(doublelinklist *list)
     free(output);
 }
 
+//compares actual list with expected list, and prints them out if they actually differ
+//Format: "[%index] %value "
 void expect(char *testName, doublelinklist *list, char *expected)
 {
     printf("%s ", testName);
     char *output = printList(list);
     if (strcmp(output, expected) != 0)
     {
-        printf("Expected %s, got %s\n", output, expected);
+        printf("Expected %s, got %s\n", expected, output);
     }
     else
     {
-        printf("\n");
+        printf("OK\n");
     }
     free(output);
+}
+
+//similar to expect, but compares ints instead
+void expectVal(char *testName, int output, int expected)
+{
+    printf("%s ", testName);
+    if (output != expected)
+    {
+        printf("Expected %s, got %s\n", expected, output);
+    }
+    else
+    {
+        printf("OK\n");
+    }
 }
 
 void testCreate()
@@ -66,20 +82,102 @@ void testCreate()
     list->destroy(list);
 }
 
+void testDestroy()
+{
+    doublelinklist *list = createTestList(0);
+    printf("testDestroy:empty Current pointer is %p. ", list);
+    list->destroy(list);
+    printf("Destroyed, it is now %p (expect NULL)\n", list);
+}
+
 void testFirst()
 {
+    doublelinklist *list = createTestList(0);
+    expectVal("testFirst:empty", list->getfirst(list), NULL);
+    list->add(list, 0, 0);
+    expectVal("testFirst:one", list->getfirst(list), 0);
+    list->add(list, 0, 5);
+    expectVal("testFirst:five", list->getfirst(list), 5);
+    list->destroy(list);
 }
 
 void testLast()
 {
+    doublelinklist *list = createTestList(0);
+    expectVal("testLast:empty", list->getlast(list), NULL);
+    list->add(list, 0, 0);
+    expectVal("testLast:one", list->getlast(list), 0);
+    list->add(list, 0, 5);
+    expectVal("testLast:five", list->getlast(list), 0);
+    list->destroy(list);
 }
 
 void testLength()
 {
+    doublelinklist *list = createTestList(0);
+    expectVal("testLength:empty", list->getlength(list), 0);
+    list->destroy(list);
+
+    list = createTestList(1);
+    expectVal("testLength:one", list->getlength(list), 1);
+    list->destroy(list);
+
+    list = createTestList(10);
+    expectVal("testLength:ten", list->getlength(list), 10);
+    list->destroy(list);
+
+    list = createTestList(1000);
+    expectVal("testLength:thousand", list->getlength(list), 1000);
+    list->destroy(list);
+}
+
+void testAddTail()
+{
+    doublelinklist *list = createTestList(0);
+    list->addtail(list, 6);
+    expect("testAddTail:six", list, "[0] 6 \n");
+
+    list->addtail(list, 486);
+    expect("testAddTail:486", list, "[0] 6 [1] 486 \n");
+
+    list->addtail(list, 99999);
+    expect("testAddTail:99999", list, "[0] 6 [1] 486 [2] 99999 \n");
+    list->destroy(list);
+}
+
+void testAdd()
+{
+    doublelinklist *list = createTestList(0);
+    list->add(list, 0, 6);
+    expect("testAdd:six", list, "[0] 6 \n");
+
+    list->add(list, 0, 486);
+    expect("testAdd:486", list, "[0] 486 [1] 6 \n");
+
+    list->add(list, 2, 99999);
+    expect("testAdd:99999", list, "[0] 486 [1] 6 [2] 99999 \n");
+    list->destroy(list);
 }
 
 void testRemove()
 {
+    doublelinklist *list = createTestList(6);
+    list->remove(list, 3);
+    expect("testRemove:delthree", list, "[0] 0 [1] 1 [2] 2 [3] 4 [4] 5 \n");
+
+    list->remove(list, 1);
+    expect("testRemove:486", list, "[0] 0 [1] 2 [2] 4 [3] 5 \n");
+
+    list->remove(list, 3);
+    expect("testRemove:99999", list, "[0] 0 [1] 2 [2] 4 \n");
+    list->destroy(list);
+
+    list = createTestList(1);
+    list->remove(list, 1);
+    //
+    list->remove(list, 0);
+    //
+    list->destroy(list);
 }
 
 void testAppend()
@@ -90,29 +188,17 @@ void testSearch()
 {
 }
 
-void testAdd()
-{
-}
-
-void testAddTail()
-{
-}
-
-void testDestroy()
-{
-}
-
 int main()
 {
     testCreate();
+    testDestroy();
     testFirst();
     testLast();
     testLength();
+    testAddTail();
+    testAdd();
     testRemove();
     testAppend();
     testSearch();
-    testAdd();
-    testAddTail();
-    testDestroy();
     return 0;
 }
