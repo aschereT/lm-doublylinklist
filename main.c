@@ -206,7 +206,7 @@ int main()
     testAddTail();
     testAdd();
     testRemove();
-    // testAppend();
+    testAppend();
     testSearch();
     return 0;
 }

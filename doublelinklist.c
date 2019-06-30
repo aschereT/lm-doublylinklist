@@ -12,8 +12,6 @@ void destroy(doublelinklist *self)
         free(curr);
         curr = next;
     }
-    self->head = NULL;
-    self->tail = NULL;
     //finally free self
     free(self);
 }
