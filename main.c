@@ -4,7 +4,7 @@
 int main()
 {
     doublelinklist* testlist = dllcreate();
-    testlist->add(testlist, 3);
+    testlist->add(testlist, 0, 3);
     printf("The length is %d\n", testlist->getlength(testlist));
     for (size_t i = 0; i < testlist->getlength(testlist); i++)
     {

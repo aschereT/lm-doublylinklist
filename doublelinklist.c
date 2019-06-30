@@ -3,10 +3,14 @@
 
 void destroy(doublelinklist* self) {
     node* curr = self->head;
+    node* next;
     while(curr != NULL) {
-        curr = curr->next;
+        //iterate through all the nodes, free-ing them
+        next = curr->next;
         free(curr);
+        curr = next;
     }
+    //finally free self
     free(self);
 }
 
@@ -15,6 +19,7 @@ int get(doublelinklist* self, int index){
     if (index >= self->length) return NULL;
 
     if (index >= self->length/2) {
+        //traverse from the tail, since index is closer to tail
         int curin = self->length-1;
         node* curr = self->tail;
         while(curr != NULL) {
@@ -27,6 +32,7 @@ int get(doublelinklist* self, int index){
     }
     else
     {
+        //traverse from the head, since index is closer to head
         int curin = 0;
         node* curr = self->head;
         while(curr != NULL) {
@@ -60,6 +66,7 @@ int getlength(doublelinklist* self){
 int remove(doublelinklist* self, int index){
     if (index >= self->length) return NULL;
     if (index >= self->length/2) {
+        //traverse from the tail, since index is closer to tail
         int curin = self->length-1;
         node* curr = self->tail;
         while(curr != NULL) {
@@ -75,6 +82,7 @@ int remove(doublelinklist* self, int index){
     }
     else
     {
+        //traverse from the head, since index is closer to head
         int curin = 0;
         node* curr = self->head;
         while(curr != NULL) {
@@ -143,6 +151,10 @@ int add(doublelinklist* self, int index, int value){
         if (self->head != NULL){
             self->head->prev = newnode;
         }
+        self->head = newnode;
+        if (self->length == 0) {
+            self->tail = newnode;
+        }
         return self->length++;
     }
     else if (index == self->length)
@@ -151,6 +163,10 @@ int add(doublelinklist* self, int index, int value){
         newnode->prev = self->tail;
         if (self->tail != NULL){
             self->tail->next = newnode;
+        }
+        self->tail = newnode;
+        if (self->length == 0) {
+            self->head = newnode;
         }
         return self->length++;
     }
@@ -199,6 +215,9 @@ doublelinklist* dllcreate() {
     }
 
     result->length = 0;
+    result->head = NULL;
+    result->tail = NULL;
+    
     result->destroy = &destroy;
     result->get = &get;
     result->getfirst = &getfirst;
