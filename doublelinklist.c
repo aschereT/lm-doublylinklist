@@ -86,8 +86,8 @@ int remove(doublelinklist *self, int index)
         {
             //extra special case, also tail
             free(self->head);
-            self->head == NULL;
-            self->tail == NULL;
+            self->head = NULL;
+            self->tail = NULL;
             return self->length--;
         }
         self->head = self->head->next;
@@ -101,8 +101,8 @@ int remove(doublelinklist *self, int index)
         {
             //extra special case, also head
             free(self->head);
-            self->head == NULL;
-            self->tail == NULL;
+            self->head = NULL;
+            self->tail = NULL;
             return self->length--;
         }
         self->tail = self->tail->prev;
