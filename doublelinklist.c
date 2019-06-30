@@ -77,6 +77,7 @@ int getlength(doublelinklist *self)
 //Removes the element at the given index. Returns the element deleted, or null otherwise
 int remove(doublelinklist *self, int index)
 {
+    //return if out of bounds
     if (index >= self->length)
         return NULL;
     if (index == 0)
@@ -90,7 +91,8 @@ int remove(doublelinklist *self, int index)
             self->tail = NULL;
             return self->length--;
         }
-        node* temp = self->tail;
+        //set pointers and then free
+        node* temp = self->head;
         self->head = self->head->next;
         self->head->prev = NULL;
         free(temp);
@@ -107,6 +109,7 @@ int remove(doublelinklist *self, int index)
             self->tail = NULL;
             return self->length--;
         }
+        //set pointers and then free
         node* temp = self->tail;
         self->tail = self->tail->prev;
         self->tail->next = NULL;
@@ -122,6 +125,7 @@ int remove(doublelinklist *self, int index)
         {
             if (curin == index)
             {
+                //found the index. Redirect pointers around
                 curr->prev->next = curr->next;
                 curr->next->prev = curr->prev;
                 free(curr);
@@ -140,6 +144,7 @@ int remove(doublelinklist *self, int index)
         {
             if (curin == index)
             {
+                //found the index. Redirect pointers around
                 curr->prev->next = curr->next;
                 curr->next->prev = curr->prev;
                 free(curr);
@@ -176,17 +181,21 @@ int append(doublelinklist *self, doublelinklist *other)
 //Returns the index of the given value. Returns the index for the first match. Returns -1 if not found.
 int find(doublelinklist *self, int value)
 {
+    //always traverses from the head, since we don't know where value might be
     int curin = 0;
     node *curr = self->head;
     while (curr != NULL)
     {
         if (curr->value == value)
         {
+            //found it!
             return curr->value;
         }
+        //didn't find it yet
         curin++;
         curr = curr->next;
     }
+    //didn't find it
     return -1;
 }
 
@@ -195,6 +204,7 @@ int add(doublelinklist *self, int index, int value)
 {
     if (index < 0 || index > self->length)
     {
+        //preemptively error out if out of bounds
         return -1;
     }
     //allocate the memory
@@ -209,11 +219,13 @@ int add(doublelinklist *self, int index, int value)
         newnode->next = self->head;
         if (self->head != NULL)
         {
+            //set old head to point to new head
             self->head->prev = newnode;
         }
         self->head = newnode;
         if (self->length == 0)
         {
+            //if only element, it is both head and tail
             self->tail = newnode;
         }
         return self->length++;
@@ -225,20 +237,23 @@ int add(doublelinklist *self, int index, int value)
         newnode->prev = self->tail;
         if (self->tail != NULL)
         {
+            //set old tail to point to new tail
             self->tail->next = newnode;
         }
         self->tail = newnode;
         if (self->length == 0)
         {
+            //if only element, it is both head and tail
             self->head = newnode;
         }
         return self->length++;
     }
     else
     {
-        //somewhere else
+        //somewhere else in the middle
         if (index >= self->length / 2)
         {
+            //closer to tail
             int curin = self->length - 1;
             node *curr = self->tail;
             while (curr != NULL)
@@ -257,6 +272,7 @@ int add(doublelinklist *self, int index, int value)
         }
         else
         {
+            //closer to head
             int curin = 0;
             node *curr = self->head;
             while (curr != NULL)
