@@ -173,6 +173,7 @@ int add(doublelinklist* self, int index, int value){
     
     if (index == 0) {
         //new head
+        newnode->prev = NULL;
         newnode->next = self->head;
         if (self->head != NULL){
             self->head->prev = newnode;
@@ -186,6 +187,7 @@ int add(doublelinklist* self, int index, int value){
     else if (index == self->length)
     {
         //new tail
+        newnode->next = NULL;
         newnode->prev = self->tail;
         if (self->tail != NULL){
             self->tail->next = newnode;
