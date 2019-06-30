@@ -171,17 +171,25 @@ void testRemove()
     list->remove(list, 3);
     expect("testRemove:99999", list, "[0] 0 [1] 2 [2] 4 \n");
     list->destroy(list);
+    
 
+    //test edge cases
     list = createTestList(1);
-    list->remove(list, 1);
-    //
+    //test out of index
+    expectVal("testRemove:outofbounds", list->remove(list, 1), NULL);
+    //test removing the last element
     list->remove(list, 0);
-    //
+    expect("testRemove:removelast", list, "\n");
     list->destroy(list);
 }
 
 void testAppend()
 {
+    doublelinklist* list1 = createTestList(0);
+    doublelinklist* list2 = createTestList(0);
+
+    list1->append(list1, list2);
+    list1->destroy(list1);
 }
 
 void testSearch()
@@ -198,7 +206,7 @@ int main()
     testAddTail();
     testAdd();
     testRemove();
-    testAppend();
+    // testAppend();
     testSearch();
     return 0;
 }

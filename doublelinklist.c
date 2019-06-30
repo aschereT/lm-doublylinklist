@@ -12,6 +12,8 @@ void destroy(doublelinklist *self)
         free(curr);
         curr = next;
     }
+    self->head = NULL;
+    self->tail = NULL;
     //finally free self
     free(self);
 }
@@ -90,8 +92,10 @@ int remove(doublelinklist *self, int index)
             self->tail = NULL;
             return self->length--;
         }
+        node* temp = self->tail;
         self->head = self->head->next;
         self->head->prev = NULL;
+        free(temp);
         return self->length--;
     }
     if (index == self->length - 1)
@@ -105,8 +109,10 @@ int remove(doublelinklist *self, int index)
             self->tail = NULL;
             return self->length--;
         }
+        node* temp = self->tail;
         self->tail = self->tail->prev;
         self->tail->next = NULL;
+        free(temp);
         return self->length--;
     }
     if (index >= self->length / 2)
