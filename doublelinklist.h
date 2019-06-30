@@ -30,6 +30,8 @@ typedef struct doublelinklist {
     int (*find)(void* self, int value);
     //Adds the given value to the index given. Returns the new length of the list, or -1 otherwise
     int (*add)(void* self, int index, int value);
+    //Adds the given value to the end. Equivalent to add(length). Returns the new length of the list, or -1 otherwise
+    int (*addtail)(void* self, int value);
 } doublelinklist;
 
 //Creates a new double linked list

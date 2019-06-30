@@ -65,6 +65,32 @@ int getlength(doublelinklist* self){
 //Removes the element at the given index. Returns the element deleted, or null otherwise
 int remove(doublelinklist* self, int index){
     if (index >= self->length) return NULL;
+    if (index == 0) {
+        //special case, head
+        if (self->length == 1) {
+            //extra special case, also tail
+            free(self->head);
+            self->head == NULL;
+            self->tail == NULL;
+            return self->length--;
+        }
+        self->head = self->head->next;
+        self->head->prev = NULL;
+        return self->length--;
+    }
+    if (index == self->length-1) {
+        //special case, tail
+        if (self->length == 1) {
+            //extra special case, also head
+            free(self->head);
+            self->head == NULL;
+            self->tail == NULL;
+            return self->length--;
+        }
+        self->tail = self->tail->prev;
+        self->tail->next = NULL;
+        return self->length--;
+    }
     if (index >= self->length/2) {
         //traverse from the tail, since index is closer to tail
         int curin = self->length-1;
@@ -208,6 +234,11 @@ int add(doublelinklist* self, int index, int value){
     return -1;
 }
 
+//Adds the given value to the end. Equivalent to add(length). Returns the new length of the list, or -1 otherwise
+int addtail(doublelinklist* self, int value){
+    return self->add(self, self->length, value);
+}
+
 doublelinklist* dllcreate() {
     doublelinklist* result = malloc(sizeof(doublelinklist));
     if (result == NULL) {
@@ -217,7 +248,7 @@ doublelinklist* dllcreate() {
     result->length = 0;
     result->head = NULL;
     result->tail = NULL;
-    
+
     result->destroy = &destroy;
     result->get = &get;
     result->getfirst = &getfirst;
@@ -227,5 +258,6 @@ doublelinklist* dllcreate() {
     result->append = &append;
     result->find = &find;
     result->add = &add;
+    result->addtail = &addtail;
     return result;
 }
