@@ -189,6 +189,25 @@ void testAppend()
     doublelinklist* list2 = createTestList(0);
 
     list1->append(list1, list2);
+    expect("testAppend:empty&empty", list1, "\n");
+    list1->destroy(list1);
+
+    list1 = createTestList(0);
+    list2 = createTestList(3);
+    list1->append(list1, list2);
+    expect("testAppend:empty&three", list1, "[0] 0 [1] 1 [2] 2 \n");
+    list1->destroy(list1);
+
+    list1 = createTestList(4);
+    list2 = createTestList(0);
+    list1->append(list1, list2);
+    expect("testAppend:four&empty", list1, "[0] 0 [1] 1 [2] 2 [3] 3 \n");
+    list1->destroy(list1);
+
+    list1 = createTestList(2);
+    list2 = createTestList(2);
+    list1->append(list1, list2);
+    expect("testAppend:two&two", list1, "[0] 0 [1] 1 [2] 0 [3] 1 \n");
     list1->destroy(list1);
 }
 

@@ -165,7 +165,7 @@ int append(doublelinklist *self, doublelinklist *other)
         self->head = other->head;
         self->tail = other->tail;
     }
-    else if (other->length >= 0)
+    else if (other->length > 0)
     {
         //Most cases end up here. Neither lists are empty.
         self->tail->next = other->head;
